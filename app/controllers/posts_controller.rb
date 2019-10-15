@@ -22,6 +22,7 @@ before_action :intercept_unknown_user, except: [:index, :show]
   def show
     @post = Post.find(params[:id])
     @author = User.find(@post.user_id)
+    @comments = Comment.where
   end
 
   def edit
