@@ -1,7 +1,4 @@
 class CommentsController < ApplicationController
-  def index
-  end
-
   def new
     @comment = Comment.new
   end
@@ -27,6 +24,10 @@ class CommentsController < ApplicationController
   private
     def comment_params
       params.permit(:content, :post_id).merge(user_id: current_user.id)
+    end
+
+    def set_comment
+      @comment = Coment.find(params[:id])
     end
 
 end

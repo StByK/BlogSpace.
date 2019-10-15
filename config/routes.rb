@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   root 'posts#index'
   get 'posts/filter' => 'posts#filter'
   resources :posts, only: [:index, :new, :create, :edit, :destroy, :show, :update] do
-    resources :comments, only:[:index, :new, :create, :edit, :destroy, :update]
+    resources :comments, only:[:new, :create, :edit, :destroy, :update]
   end
   devise_for :users
   devise_scope :user do
