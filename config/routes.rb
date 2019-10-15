@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   root 'posts#index'
   get 'posts/filter' => 'posts#filter'
   resources :posts, only: [:index, :new, :create, :edit, :destroy, :show, :update]
-  resources :comments, only:[:index, :new, :create, :edit, :destroy, :show, :update]
+  resources :comments, only:[:index, :new, :create, :edit, :destroy, :update]
   devise_for :users
   devise_scope :user do
     get '/users/sign_out' => 'devise/sessions#destroy'
