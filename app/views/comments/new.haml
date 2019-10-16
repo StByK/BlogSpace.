@@ -1,8 +1,0 @@
-%h3.textcenter コメントの作成
-= form_with url: post_comments_path do |f|
-  .row
-    .field.col.s4.offset-s4
-      = f.label :コメント
-      = f.text_area :content, placeholder: "コメントを書く(最大140字)", class: "textarea"
-  .row
-    = f.submit "投稿", class: "waves-effect waves-light btn-large col s4 offset-s4"
