@@ -1,4 +1,8 @@
 class CommentsController < ApplicationController
+  before_action :set_comment, only: [:edit, :update, :destroy]
+  before_action :deny_unknown_user, only: [:new]
+  before_action :deny_wrong_user, except: [:new]
+
   def new
     @comment = Comment.new
   end
@@ -15,10 +19,20 @@ class CommentsController < ApplicationController
   def edit
   end
 
-  def destroy
+  def update
+    @comment.update(comment_params) if @comment.user_id == current_user.id
+    if @comment.update(comment_params)
+      redirect_to "/posts/#{params[:post_id]}"
+    else
+      redirect_to "/posts/#{params[:post_id]}", alert: "エラー：編集できませんでした"
+    end
   end
 
-  def update
+  def destroy
+    @comment.destroy if @comment.user_id == current_user.id
+    if @comment.destroy
+      redirect_to "/posts/#{params[:post_id]}", notice: "コメントを削除しました"
+    end
   end
 
   private
@@ -26,8 +40,16 @@ class CommentsController < ApplicationController
       params.permit(:content, :post_id).merge(user_id: current_user.id)
     end
 
+    def deny_unknown_user
+      redirect_to root_path unless user_signed_in?
+    end
+
+    def deny_wrong_user
+      redirect_to root_path unless user_signed_in? && @comment.user_id == current_user.id
+    end
+  
     def set_comment
-      @comment = Coment.find(params[:id])
+      @comment = Comment.find(params[:id])
     end
 
 end

@@ -28,7 +28,7 @@
           =link_to "#{@post.id}/comments/new", class: "waves-effect waves-teal btn center" do
             コメントする
             %i.material-icons.right comment
-        - @comments.each do |comment|
+        - @comments.includes(:user).each do |comment|
           .comment__box
             %p.card-info
               = "#{comment.user.name}がコメントしました"
@@ -36,3 +36,7 @@
               = comment.content
             %p.card-info
               = comment.created_at.strftime("%Y-%m-%d %H:%M")
+              -if user_signed_in? && comment.user_id == current_user.id
+                = link_to "/posts/#{params[:id]}/comments/#{comment.id}/edit", class: "waves-effect waves-teal btn-flat orange-text" do
+                  編集
+              

@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
 
-before_action :intercept_unknown_user, except: [:index, :show]
+before_action :deny_unknown_user, except: [:index, :show]
 before_action :set_post, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -33,8 +33,8 @@ before_action :set_post, only: [:show, :edit, :update, :destroy]
   end
 
   def update
-    post.update(post_params) if post.user_id == current_user.id
-    if post.update(post_params)
+    @post.update(post_params) if @post.user_id == current_user.id
+    if @post.update(post_params)
       redirect_to "/posts/#{params[:id]}"
     else
       redirect_to "/posts/#{params[:id]}", alert: "エラー：編集できませんでした"
@@ -42,8 +42,8 @@ before_action :set_post, only: [:show, :edit, :update, :destroy]
   end
 
   def destroy
-    post.destroy if post.user_id == current_user.id
-    if post.destroy
+    @post.destroy if @post.user_id == current_user.id
+    if @post.destroy
       redirect_to root_path, notice: "投稿を削除しました"
     end
   end
@@ -54,7 +54,7 @@ before_action :set_post, only: [:show, :edit, :update, :destroy]
     params.require(:post).permit(:title, :content).merge(user_id: current_user.id)
   end
 
-  def intercept_unknown_user
+  def deny_unknown_user
     redirect_to root_path unless user_signed_in?
   end
 
