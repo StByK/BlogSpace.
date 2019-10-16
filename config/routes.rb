@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get 'posts/filter' => 'posts#filter'
   resources :posts, only: [:index, :new, :create, :edit, :destroy, :show, :update] do
     resources :comments, only:[:new, :create, :edit, :destroy, :update]
+    resources :images, only:[:create, :destroy]
   end
   devise_for :users
   devise_scope :user do
