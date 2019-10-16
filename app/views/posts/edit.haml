@@ -1,12 +1,16 @@
-%h3.textcenter 投稿内容の編集
-= form_for @post do |f|
-  .row
-    .field.col.s4.offset-s4
-      = f.label :タイトル
-      = f.text_field :title, autofocus: true, autocomplete: "title"
-  .row
-    .field.col.s4.offset-s4
-      = f.label :内容
-      = f.text_area :content, autocomplete: "content", class: "textarea"
-  .row
-    = f.submit "投稿", class: "waves-effect waves-light btn-large col s4 offset-s4"
+.row
+  .post__form.col.s8
+    %h3.textcenter 投稿内容の編集
+    = form_for @post do |f|
+      .row
+        .field.col.s10.offset-s1
+          = f.label :タイトル
+          = f.text_field :title, autofocus: true, autocomplete: "title"
+      .row
+        .field.col.s10.offset-s1
+          = f.label :内容
+          = f.text_area :content, autocomplete: "content", class: "textarea"
+      .row
+        = f.submit "投稿", class: "waves-effect waves-light btn-large col s10 offset-s1"
+  .image__form.col.s4
+    =form_with url: "/posts/:post_id/images"

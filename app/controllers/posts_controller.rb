@@ -9,15 +9,17 @@ before_action :set_post, only: [:show, :edit, :update, :destroy]
 
   def new
     @post = Post.new
+    @post.images.build
   end
 
   def create
-    @post = Post.new(post_params)
-    if @post.save
-      redirect_to root_path, notice: "投稿が完了しました"
-    else
-      redirect_to root_path, alert: "エラー：投稿できませんでした"
-    end
+    Post.create!(post_params)
+    # @post = Post.new(post_params)
+    # if @post.save
+    #   redirect_to root_path, notice: "投稿が完了しました"
+    # else
+    #   redirect_to root_path, alert: "エラー：投稿できませんでした"
+    # end
   end
 
   def show
@@ -51,8 +53,9 @@ before_action :set_post, only: [:show, :edit, :update, :destroy]
   private
 
   def post_params
-    params.require(:post).permit(:title, :content).merge(user_id: current_user.id)
+    params.require(:post).permit(:title, :content, images_attributes: { image: [] }).merge(user_id: current_user.id)
   end
+
 
   def deny_unknown_user
     redirect_to root_path unless user_signed_in?

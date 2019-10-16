@@ -1,8 +1,6 @@
 class Image < ApplicationRecord
-  belongs_to :user
-  belongs_to :post
+  belongs_to :user, optional: true
+  belongs_to :post, optional: true
 
-  validates :content, presence: true
-
-  mount_uploader :image, ImageUploader
+  mount_uploaders :image, ImageUploader
 end
