@@ -9,12 +9,15 @@ before_action :set_post, only: [:show, :edit, :update, :destroy]
 
   def new
     @post = Post.new
-    @post.images.build
+    @image = @post.images.build
   end
 
   def create
     @post = Post.new(post_params)
     if @post.save
+      params[:images]['image'].each do |i|
+        @image = @post.images.create!(image: i)
+      end
       redirect_to root_path, notice: "投稿が完了しました"
     else
       redirect_to root_path, alert: "エラー：投稿できませんでした"
@@ -24,6 +27,7 @@ before_action :set_post, only: [:show, :edit, :update, :destroy]
   def show
     @author = User.find(@post.user_id)
     @comments = Comment.where(post_id: params[:id]).order("id DESC")
+    @images = @post.images.all
   end
 
   def edit
@@ -52,7 +56,7 @@ before_action :set_post, only: [:show, :edit, :update, :destroy]
   private
 
   def post_params
-    params.require(:post).permit(:title, :content, images_attributes: { image: [] }).merge(user_id: current_user.id)
+    params.require(:post).permit(:title, :content, images_attributes: [:image]).merge(user_id: current_user.id)
   end
 
 

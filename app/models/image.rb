@@ -1,5 +1,5 @@
 class Image < ApplicationRecord
   belongs_to :post, optional: true
 
-  mount_uploaders :image, ImageUploader
+  mount_uploader :image, ImageUploader
 end
