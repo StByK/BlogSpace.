@@ -7,7 +7,7 @@
         %p.card-text
           = @post.content
           - @images.each do |i|
-            = image_tag i.image.url
+            = image_tag i.image.url(:thumb)
         %p.card-info
           = "投稿者：#{@author.name}"
         %p.card-info
