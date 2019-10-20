@@ -1,5 +1,6 @@
-%h3.textcenter 投稿内容の編集
-= form_for @post do |f|
+.row
+= form_with model: @post do |f|
+  %h3.textcenter 投稿内容の編集
   .row
     .field.col.s4.offset-s4
       = f.label :タイトル
@@ -9,4 +10,17 @@
       = f.label :内容
       = f.text_area :content, autocomplete: "content", class: "textarea"
   .row
-    = f.submit "投稿", class: "waves-effect waves-light btn-large col s4 offset-s4"
+    .col.s4.offset-s4.center
+      - @images.each do |i|
+        = image_tag i.image.url(:thumb)
+        = link_to "削除", "/posts/#{params[:id]}/images/#{i.id}", method: :delete
+  -# .row
+  -#   .col.s4.offset-s4
+  -#     = f.fields_for :images do |image|
+  -#       = image.file_field :image, multiple: true, type: 'file', name: "images[image][]"
+  -#       = image.check_box:_destroy
+  -#       %span.image_delete{ data: { id: image.index, default: 'default' } }
+  -#         Delete
+
+  .row
+    = f.submit "編集", class: "waves-effect waves-light btn-large col s4 offset-s4"
