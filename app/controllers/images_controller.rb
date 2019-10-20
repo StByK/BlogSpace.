@@ -1,10 +1,8 @@
 class ImagesController < ApplicationController
-  def create
-    @image = Image.new(image_params)
-    @image.create
-  end
 
   def destroy
+    image = Image.find(params[:id])
+    image.destroy
   end
 
   private

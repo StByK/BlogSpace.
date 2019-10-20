@@ -31,6 +31,7 @@ before_action :set_post, only: [:show, :edit, :update, :destroy]
   end
 
   def edit
+    @images = @post.images.all
   end
 
   def filter
@@ -40,6 +41,9 @@ before_action :set_post, only: [:show, :edit, :update, :destroy]
   def update
     @post.update(post_params) if @post.user_id == current_user.id
     if @post.update(post_params)
+      # params[:images]['image'].each do |i|
+      #   @image = @post.images.update(image: i)
+      # end
       redirect_to "/posts/#{params[:id]}"
     else
       redirect_to "/posts/#{params[:id]}", alert: "エラー：編集できませんでした"
@@ -59,6 +63,9 @@ before_action :set_post, only: [:show, :edit, :update, :destroy]
     params.require(:post).permit(:title, :content, images_attributes: [:image]).merge(user_id: current_user.id)
   end
 
+  def update_post_params
+    params.require(:post).permit(:title, :content, images_attributes: [:image, :_destroy, :id]).merge(user_id: current_user.id)
+  end
 
   def deny_unknown_user
     redirect_to root_path unless user_signed_in?
