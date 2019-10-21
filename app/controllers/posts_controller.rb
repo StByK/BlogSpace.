@@ -28,6 +28,7 @@ before_action :set_post, only: [:show, :edit, :update, :destroy]
     @author = User.find(@post.user_id)
     @comments = Comment.where(post_id: params[:id]).order("id DESC")
     @images = @post.images.all
+    @like = Like.new
   end
 
   def edit

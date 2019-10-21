@@ -1,7 +1,7 @@
 class CommentsController < ApplicationController
   before_action :set_comment, only: [:edit, :update, :destroy]
   before_action :deny_unknown_user, only: [:new]
-  before_action :deny_wrong_user, except: [:new]
+  before_action :deny_wrong_user, except: [:new, :create]
 
   def new
     @comment = Comment.new
