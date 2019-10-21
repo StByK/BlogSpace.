@@ -9,4 +9,5 @@ class Post < ApplicationRecord
     validates :title
     validates :content
   end
+
 end

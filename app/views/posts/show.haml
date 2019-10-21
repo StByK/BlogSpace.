@@ -8,10 +8,15 @@
           = @post.content
           - @images.each do |i|
             = image_tag i.image.url(:thumb)
-        %p.card-info
-          = "投稿者：#{@author.name}"
+        .row
+          %p.card-info.col.s2
+            = "投稿者：#{@author.name}"
+          %p.card-info.col
+            %i.material-icons thumb_up
+            = @post.likes.count
         %p.card-info
           = @author.created_at.strftime("%Y-%m-%d %H:%M")
+
         %p.card-edit
           -if user_signed_in? && @author.id == current_user.id
             = link_to "/posts/#{@post.id}/edit", class: "waves-effect waves-teal btn" do
@@ -20,6 +25,16 @@
             = link_to "/posts/#{@post.id}", class: "waves-effect waves-teal btn", method: :delete do
               削除
               %i.material-icons.right delete
+          -if user_signed_in?
+            - if @post.likes.find_by(user_id: current_user.id)
+              = link_to "/posts/#{@post.id}/likes/#{@post.likes.find_by(user_id: current_user.id).user_id}",class: "waves-effect waves-teal btn grey", method: :delete do
+                いいね
+                %i.material-icons.right thumb_up
+            -else
+              = link_to "/posts/#{@post.id}/likes", class: "waves-effect waves-teal btn", method: :post do
+                いいね
+                %i.material-icons.right thumb_up
+
           = link_to :back, class: "waves-effect waves-teal btn" do
             戻る
             %i.material-icons.right arrow_back
