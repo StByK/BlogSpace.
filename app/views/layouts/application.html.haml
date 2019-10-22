@@ -44,5 +44,31 @@
               = link_to new_user_registration_path, class: "waves-effect waves-light btn" do
                 サインアップ
                 %i.material-icons.right person_add
+        %a.sidenav-trigger{"data-target" => "slide-out", :href => "#"}
+          %i.material-icons menu
+    %ul#slide-out.sidenav
+      - if user_signed_in?
+        %li
+          = link_to destroy_user_session_path do
+            ログアウト
+            %i.material-icons.right cancel
+        %li
+          = link_to edit_user_registration_path do
+            自分の投稿一覧
+            %i.material-icons.right search
+        %li
+          = link_to new_post_path do
+            記事の投稿
+            %i.material-icons.right create
+      - else
+        %li
+          = link_to user_session_path do
+            ログイン
+            %i.material-icons.right assignment_turned_in
+        %li
+          = link_to new_user_registration_path do
+            サインアップ
+            %i.material-icons.right person_add
+
     = render "layouts/notifications"
     = yield
