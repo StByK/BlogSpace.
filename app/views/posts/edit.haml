@@ -21,6 +21,11 @@
   -#       = image.check_box:_destroy
   -#       %span.image_delete{ data: { id: image.index, default: 'default' } }
   -#         Delete
+  .row
+    .field.col.s4.offset-s4
+      = f.fields_for :tags do |tag|
+        = tag.label :タグ
+        = tag.text_field :name, name: "tag_name", placeholder: "複数タグの入力は「,」で区切る"
 
   .row
     = f.submit "編集", class: "waves-effect waves-light btn-large col s4 offset-s4"

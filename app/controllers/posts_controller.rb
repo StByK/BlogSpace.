@@ -10,14 +10,19 @@ before_action :set_post, only: [:show, :edit, :update, :destroy]
   def new
     @post = Post.new
     @image = @post.images.build
+    @tag = @post.tags.build
   end
 
   def create
     @post = Post.new(post_params)
     if @post.save
-      params[:images]['image'].each do |i|
-        @image = @post.images.create!(image: i)
+      if params[:images].present?
+        params[:images]['image'].each do |i|
+          @image = @post.images.create!(image: i)
+        end
       end
+      tag_list = params[:tag_name].split(",")
+      @post.save_tags(tag_list)
       redirect_to root_path, notice: "投稿が完了しました"
     else
       redirect_to root_path, alert: "エラー：投稿できませんでした"
@@ -61,7 +66,7 @@ before_action :set_post, only: [:show, :edit, :update, :destroy]
   private
 
   def post_params
-    params.require(:post).permit(:title, :content, images_attributes: [:image]).merge(user_id: current_user.id)
+    params.require(:post).permit(:title, :content, images_attributes: [:image], tags_attributes: :name).merge(user_id: current_user.id)
   end
 
   def update_post_params

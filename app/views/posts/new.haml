@@ -13,4 +13,9 @@
       = f.fields_for :images do |i|
         = i.file_field :image, multiple: true, type: 'file', name: "images[image][]"
   .row
+    .field.col.s4.offset-s4
+      = f.fields_for :tags do |tag|
+        = tag.label :タグ
+        = tag.text_field :name, name: "tag_name", placeholder: "複数タグの入力は「,」で区切る"
+  .row
     = f.submit "投稿", class: "waves-effect waves-light btn-large col s4 offset-s4"

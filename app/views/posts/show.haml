@@ -15,7 +15,11 @@
             %i.material-icons thumb_up
             = @post.likes.count
         %p.card-info
-          = @author.created_at.strftime("%Y-%m-%d %H:%M")
+          タグ：
+          -@post.tags.each do |tag|
+            = "#{tag.name}"
+        %p.card-info
+          = @post.created_at.strftime("%Y-%m-%d %H:%M")
 
         %p.card-edit
           -if user_signed_in? && @author.id == current_user.id
