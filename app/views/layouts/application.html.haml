@@ -46,8 +46,10 @@
                 %i.material-icons.right person_add
         %a.sidenav-trigger{"data-target" => "slide-out", :href => "#"}
           %i.material-icons menu
-    %ul#slide-out.sidenav
+    %ul#slide-out.sidenav.pink.grey.lighten-2
       - if user_signed_in?
+        .user-view
+          ようこそ#{current_user.name}
         %li
           = link_to destroy_user_session_path do
             ログアウト
@@ -61,6 +63,8 @@
             記事の投稿
             %i.material-icons.right create
       - else
+        .user-view
+          ようこそゲストさん
         %li
           = link_to user_session_path do
             ログイン
