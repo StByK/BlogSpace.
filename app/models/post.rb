@@ -19,12 +19,10 @@ class Post < ApplicationRecord
     exist_tags = current_tags - tag_list
     new_tags = tag_list - current_tags
   
-    # Destroy old taggings:
     exist_tags.each do |exist_tag|
       self.tags.delete Tag.find_by(name:exist_tag)
     end
 
-    # Create new taggings:
     new_tags.each do |new_tag|
       post_tag = Tag.find_or_create_by(name:new_tag)
       self.tags << post_tag
