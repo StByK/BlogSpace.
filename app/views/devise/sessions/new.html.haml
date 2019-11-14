@@ -1,4 +1,4 @@
-%h2.textcenter Log in
+%h2.textcenter ログイン
 = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
   .row
     .field.col.s4.offset-s4
@@ -11,6 +11,6 @@
       %br/
       = f.password_field :password, autocomplete: "current-password"
   .row
-    = f.submit "Log in", class: "waves-effect waves-light btn-large col s4 offset-s4"
+    = f.submit "ログインする", class: "waves-effect waves-light btn-large col s4 offset-s4"
 
 
