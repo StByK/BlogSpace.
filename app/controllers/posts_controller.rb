@@ -1,6 +1,7 @@
 class PostsController < ApplicationController
 
-before_action :intercept_unknown_user, except: [:index, :show]
+before_action :deny_unknown_user, except: [:index, :show]
+before_action :set_post, only: [:show, :edit, :update, :destroy]
 
   def index
     @posts = Post.paginate(page: params[:page], per_page: 9).order("id DESC")
@@ -29,7 +30,6 @@ before_action :intercept_unknown_user, except: [:index, :show]
   end
 
   def show
-    @post = Post.find(params[:id])
     @author = User.find(@post.user_id)
     @comments = Comment.where(post_id: params[:id]).order("id DESC")
     @images = @post.images.all
@@ -57,9 +57,8 @@ before_action :intercept_unknown_user, except: [:index, :show]
   end
 
   def destroy
-    post = Post.find(params[:id])
-    post.destroy if post.user_id == current_user.id
-    if post.destroy
+    @post.destroy if @post.user_id == current_user.id
+    if @post.destroy
       redirect_to root_path, notice: "投稿を削除しました"
     end
   end
@@ -74,8 +73,12 @@ before_action :intercept_unknown_user, except: [:index, :show]
     params.require(:post).permit(:title, :content, images_attributes: [:image, :_destroy, :id]).merge(user_id: current_user.id)
   end
 
-  def intercept_unknown_user
+  def deny_unknown_user
     redirect_to root_path unless user_signed_in?
+  end
+
+  def set_post
+    @post = Post.find(params[:id])
   end
 
 end

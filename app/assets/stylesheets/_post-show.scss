@@ -1,6 +1,7 @@
 .show {
   .card-content {
     height: calc(100vh - 106.5px);
+    overflow: scroll;
     .card-text {
       padding-bottom: 10px;
       border-bottom: solid;
@@ -14,5 +15,13 @@
       }
     }
   }
-  
+}
+.comment{
+  .card-content {
+    height: calc(100vh - 106.5px);
+    overflow: scroll;
+  }
+  .comment__box {
+    border-bottom: solid;
+  }
 }
