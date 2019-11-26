@@ -8,11 +8,20 @@ before_action :intercept_unknown_user, except: [:index, :show]
 
   def new
     @post = Post.new
+    @image = @post.images.build
+    @tag = @post.tags.build
   end
 
   def create
     @post = Post.new(post_params)
     if @post.save
+      if params[:images].present?
+        params[:images]['image'].each do |i|
+          @image = @post.images.create!(image: i)
+        end
+      end
+      tag_list = params[:tag_name].split(",")
+      @post.save_tags(tag_list)
       redirect_to root_path, notice: "投稿が完了しました"
     else
       redirect_to root_path, alert: "エラー：投稿できませんでした"
@@ -22,10 +31,13 @@ before_action :intercept_unknown_user, except: [:index, :show]
   def show
     @post = Post.find(params[:id])
     @author = User.find(@post.user_id)
+    @comments = Comment.where(post_id: params[:id]).order("id DESC")
+    @images = @post.images.all
+    @like = Like.new
   end
 
   def edit
-    @post = Post.find(params[:id])
+    @images = @post.images.all
   end
 
   def filter
@@ -33,9 +45,11 @@ before_action :intercept_unknown_user, except: [:index, :show]
   end
 
   def update
-    post = Post.find(params[:id])
-    post.update(post_params) if post.user_id == current_user.id
-    if post.update(post_params)
+    @post.update(post_params) if @post.user_id == current_user.id
+    if @post.update(post_params)
+      # params[:images]['image'].each do |i|
+      #   @image = @post.images.update(image: i)
+      # end
       redirect_to "/posts/#{params[:id]}"
     else
       redirect_to "/posts/#{params[:id]}", alert: "エラー：編集できませんでした"
@@ -53,7 +67,11 @@ before_action :intercept_unknown_user, except: [:index, :show]
   private
 
   def post_params
-    params.require(:post).permit(:title, :content).merge(user_id: current_user.id)
+    params.require(:post).permit(:title, :content, images_attributes: [:image], tags_attributes: :name).merge(user_id: current_user.id)
+  end
+
+  def update_post_params
+    params.require(:post).permit(:title, :content, images_attributes: [:image, :_destroy, :id]).merge(user_id: current_user.id)
   end
 
   def intercept_unknown_user
