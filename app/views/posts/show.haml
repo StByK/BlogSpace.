@@ -7,7 +7,8 @@
         %p.card-text
           = @post.content
           - @images.each do |i|
-            = image_tag i.image.url(:thumb)
+            = link_to post_image_path(params[:id], i.id) do
+              = image_tag i.image.url(:thumb)
         .row
           %p.card-info.col.s2
             = "投稿者：#{@author.name}"
@@ -60,4 +61,3 @@
               -if user_signed_in? && comment.user_id == current_user.id
                 = link_to "/posts/#{params[:id]}/comments/#{comment.id}/edit", class: "waves-effect waves-teal btn-flat orange-text" do
                   編集
-              
