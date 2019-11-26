@@ -1,5 +1,5 @@
 %h3.textcenter 新規投稿
-= form_with model: @post do |f|
+= form_with model: @post, local: true do |f|
   .row
     .field.col.s4.offset-s4
       = f.label :タイトル

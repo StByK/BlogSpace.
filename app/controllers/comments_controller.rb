@@ -9,8 +9,9 @@ class CommentsController < ApplicationController
 
   def create
     @comment = Comment.new(comment_params)
+    post = params[:post_id] 
     if @comment.save
-      redirect_to "/posts/#{@comment.post_id}", notice: "コメントを投稿しました"
+      redirect_to post_path(post), notice: "コメントを投稿しました"
     else
       redirect_to root_path, alert: "コメントの投稿に失敗しました"
     end

@@ -1,5 +1,5 @@
 %h3.textcenter コメントの編集
-= form_with url: post_comment_path, method: :patch do |f|
+= form_with url: post_comment_path, local: true, method: :patch do |f|
   .row
     .field.col.s4.offset-s4
       = f.label :コメント
