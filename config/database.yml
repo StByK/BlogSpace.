@@ -49,6 +49,9 @@ test:
 #
 production:
   <<: *default
-  database: BlogSpace__production
-  username: BlogSpace_
-  password: <%= ENV['BLOGSPACE__DATABASE_PASSWORD'] %>
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  # database: BlogSpace__production
+  # username: BlogSpace_
+  # password: <%= ENV['BLOGSPACE__DATABASE_PASSWORD'] %>
